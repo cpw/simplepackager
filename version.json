@@ -1,0 +1,24 @@
+{
+  "id": "${profile_name}",
+  "time": "${timestamp}",
+  "releaseTime": "${timestamp}",
+  "type": "release",
+  "inheritsFrom": "${minecraft_version}",
+  "jar": "${minecraft_version}",
+  "minecraftArguments": "--username \${auth_player_name} --version \${version_name} --gameDir \${game_directory} --assetsDir \${assets_root} --assetIndex \${assets_index_name} --uuid \${auth_uuid} --accessToken \${auth_access_token} --userType \${user_type} --versionType \${version_type} --tweakClass cpw.mods.simplepackager.EmptyTweaker",
+  "mainClass": "net.minecraft.launchwrapper.Launch",
+  "libraries": [
+    {
+      "name": "${artifact}"
+    },
+    {
+      "name": "cpw.mods:tweaker:1.0"
+    },
+    {
+      "name": "net.minecraft:launchwrapper:1.12"
+    },
+    {
+      "name": "org.ow2.asm:asm-all:5.0.3"
+    }
+  ]
+}

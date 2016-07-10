@@ -1,0 +1,55 @@
+// The minecraft version we're targetting
+def mcversion = project.ext.properties.mcversion?:"1.10.2"
+// The name of the version profile we will create in the the launcher
+def profilename = project.ext.properties.archivename ?: "exampleprofile"
+// The name of the runnable jar file containing the actual code
+def archivename = project.ext.properties.archivename ?: "example"
+// The maven group name we'll store the archive under in the client (in the libraries subdirectory)
+def groupname = project.ext.properties.archivename ?: "cpw.mods.simplepackager"
+// The name of the zip bundling everything into a convenient package
+def outputzip = project.ext.properties.outputzip ?: "output.zip"
+
+def groupdir = groupname.replaceAll('\\.','/')
+
+task buildJars << {
+    delete("build")
+    makeJar.execute()
+    processjson.execute()
+    print("${groupdir}")
+    copy {
+        from file("build/dist/${archivename}-1.0.jar")
+        into file("build/dist/libraries/${groupdir}/${archivename}/1.0/")
+    }
+    copy {
+        from file("tweaker-1.0.jar")
+        into file("build/dist/libraries/cpw/mods/tweaker/1.0/")
+    }
+    makeZip.execute()
+}
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format("yyyy-MM-dd'T'HH:mm:ssZ")
+    return formattedDate
+}
+task makeZip(type: Zip) {
+    archiveName "${outputzip}"
+    from "build/dist"
+}
+
+task processjson(type: Copy) {
+    from file('version.json')
+    into "build/dist/versions/${profilename}"
+    rename "version.json", "${profilename}.json"
+    expand(minecraft_version: "${mcversion}",
+    profile_name: "${profilename}",
+    artifact: "${groupname}:${archivename}:1.0",
+    timestamp: getDate())
+}
+task makeJar(type: Jar) {
+    archiveName "build/dist/${archivename}-1.0.jar"
+    from "reobf/minecraft"
+    manifest {
+        attributes("Main-Class": "net.minecraft.server.MinecraftServer",
+        "Class-Path": "${archivename}-1.0.jar minecraft_server.${mcversion}.jar")
+    }
+}
