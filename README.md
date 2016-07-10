@@ -5,7 +5,7 @@ In response to the annoyance of people who still insist on deleting meta-inf, he
 which can be used to ship modified minecraft classes, in blatant violation of the Mojang license.
 
 The zip file it outputs (buildJars task) is designed to be directly extracted either next
-to "minecraft_server.<version>.jar" or over the top of a minecraft client installation. 
+to "minecraft_server.[version].jar" or over the top of a minecraft client installation. 
 
 To run on the server, execute the executable jar file it creates (default example-1.0.jar).
 To run in the client, select the "exampleprofile" version that gets created in a new minecraft profile.
